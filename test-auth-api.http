@@ -1,0 +1,63 @@
+# Test Authentication API Endpoints
+# Use this file with REST Client extensions in VS Code or similar tools
+
+### Variables
+@baseUrl = http://localhost:7070
+@email = test@example.com
+@password = password123
+
+### 1. Login to get JWT token
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "{{email}}",
+    "password": "{{password}}"
+}
+
+### 2. Login with invalid credentials (should fail)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "invalid@example.com",
+    "password": "wrongpassword"
+}
+
+### 3. Change password (replace YOUR_JWT_TOKEN with actual token from login response)
+PUT {{baseUrl}}/auth/change-password
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+    "oldPassword": "password123",
+    "newPassword": "newPassword456"
+}
+
+### 4. Try to change password without authorization (should fail)
+PUT {{baseUrl}}/auth/change-password
+Content-Type: application/json
+
+{
+    "oldPassword": "password123",
+    "newPassword": "newPassword456"
+}
+
+### 5. Try to change password with invalid old password (should fail)
+PUT {{baseUrl}}/auth/change-password
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
+
+{
+    "oldPassword": "wrongOldPassword",
+    "newPassword": "newPassword456"
+}
+
+### 6. Test existing books endpoint (should still work)
+GET {{baseUrl}}/books?limit=5
+
+### Test Users Created:
+# test@example.com / password123
+# admin@library.com / admin123
+# librarian@library.com / librarian123
+# user@library.com / user123

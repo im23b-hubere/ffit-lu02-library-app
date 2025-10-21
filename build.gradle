@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 group = 'ch.bzz'
@@ -12,6 +13,7 @@ repositories {
 dependencies {
     // dependencies for the application
     implementation 'org.postgresql:postgresql:42.7.3'
+    implementation 'com.h2database:h2:2.2.224' // In-memory database fallback
     
     // SLF4J + Logback for logging (LU03b)
     implementation 'org.slf4j:slf4j-api:2.0.9'
@@ -26,8 +28,21 @@ dependencies {
     implementation 'io.javalin:javalin:5.6.3'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
     
+    // JWT for authentication (LU06a)
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+    
     // dependencies for testing
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+}
+
+application {
+    mainClass = 'ch.bzz.JavalinMain'
+}
+
+run {
+    standardInput = System.in
 }
 
 test {
